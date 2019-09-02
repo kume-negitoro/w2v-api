@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "precommit": "lint-staged -d",
-    "prepare": "tsc",
+    "postinstall": "postinstall-build build",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -24,5 +25,8 @@
     "prettier": "^1.18.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "postinstall-build": "^5.0.3"
   }
 }
