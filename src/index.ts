@@ -97,7 +97,7 @@ export class Model {
     getNearestWords(
         vectors: MayWordVector[],
         n: number,
-        excludes: WordVector[] = []
+        excludes: MayWordVector[] = []
     ): WordDist[][] {
         const distsList: WordDist[][] = []
         for (const wv of this.vocab) {
@@ -121,8 +121,15 @@ export class Model {
         )
     }
 
-    mostSimilar(phrases: string[], n = 10): WordDist[][] {
-        return this.getNearestWords(this.getVectors(phrases), n)
+    mostSimilar(
+        phrases: string[],
+        n = 10,
+        excludes: string[] = []
+    ): WordDist[][] {
+        const wvs = this.getVectors([...phrases, ...excludes])
+        const iwvs = wvs.slice(0, phrases.length)
+        const ewvs = wvs.slice(phrases.length, phrases.length + excludes.length)
+        return this.getNearestWords(iwvs, n, ewvs)
     }
 
     analogy(positives: string[], negatives: string[], n = 10): WordDist[][] {
