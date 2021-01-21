@@ -1,6 +1,6 @@
 export const normalized = (values: number[]): number[] => {
     const len = Math.sqrt(values.reduce((acc, v) => acc + v * v, 0))
-    return values.map(v => v / len)
+    return values.map((v) => v / len)
 }
 
 export const bInsert = <T>(
@@ -74,11 +74,11 @@ export class Model {
     }
 
     getVector(word: string): WordVector | undefined {
-        return this.vocab.find(v => v.word === word)
+        return this.vocab.find((v) => v.word === word)
     }
 
     getVectors(words: string[]): MayWordVector[] {
-        const vectors: MayWordVector[] = words.map(_ => undefined)
+        const vectors: MayWordVector[] = words.map((_) => undefined)
         for (const wv of this.vocab)
             for (const [i, word] of words.entries())
                 if (!vectors[i] && word === wv.word) vectors[i] = wv
@@ -88,7 +88,7 @@ export class Model {
     similarity(word1: string, word2: string): number | undefined {
         if (word1 === word2) return 1
         const vecs = this.vocab.filter(
-            wv => wv.word === word1 || wv.word === word2
+            (wv) => wv.word === word1 || wv.word === word2
         )
         if (vecs.length !== 2) return undefined
         return vecs[0].values.reduce((a, v, i) => a + v * vecs[1].values[i], 0)
@@ -116,7 +116,7 @@ export class Model {
                 )
             }
         }
-        return distsList.map(dists =>
+        return distsList.map((dists) =>
             dists.sort((v1, v2) => v2.dist - v1.dist).slice(0, n)
         )
     }
@@ -143,7 +143,10 @@ export class Model {
             if (negatives.includes(wv.word)) nwvs.push(wv)
         }
 
-        const init = new WordVector('', this.vocab[0].values.map(_ => 0))
+        const init = new WordVector(
+            '',
+            this.vocab[0].values.map((_) => 0)
+        )
         const vector = pwvs
             .reduce((vec, wvs) => vec.add(wvs), init)
             .sub(nwvs.reduce((vec, wvs) => vec.add(wvs), init))
@@ -155,7 +158,7 @@ export const parseAsVocablary = (tsv: string): WordVector[] => {
     return tsv
         .trim()
         .split('\n')
-        .map(row => {
+        .map((row) => {
             const [, word, _vector] = row.split('\t')
             const vector: number[] = JSON.parse(_vector)
             return new WordVector(word, normalized(vector))
