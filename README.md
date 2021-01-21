@@ -1,5 +1,13 @@
 これは word2vec の api をフロントエンド向けに修正したパッケージです
 
+## install
+
+`$ npm install kume-negitoro/w2v-api --unsafe-perm`
+
+or
+
+`$ yarn add kume-negitoro/w2v-api --unsafe-perm`
+
 ## api
 
 ### WordDist
